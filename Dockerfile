@@ -1,17 +1,10 @@
 # base image
-FROM node:latest
+FROM nginx:latest
 
-# set working directory
-WORKDIR /app
+VOLUME /raor_dev_volume
 
-# ADD `/app/node_modules/.bin` to $PATH
-ENV PATH /app/node_modules/.bin:$PATH
+RUN rm -rf /etc/nginx/conf.d/default.conf
 
-# app dependencies, install 및 caching
-COPY package.json /app/package.json
+ADD ./nginx/default.conf /etc/nginx/conf.d/default.conf
 
-RUN npm install
-
-# RUN APP
-CMD ["npm", "start"]
-
+ADD ./build /usr/share/nginx/html

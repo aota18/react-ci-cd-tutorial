@@ -52,15 +52,18 @@ pipeline {
 
         // 
          stage('Build Frontend') {
-            agent any
+            agent {
+                docker {
+                    image 'node:14.15.2-alpine'
+                }
+            }
 
             steps {
                 echo 'Build Frontend'
 
-                dir ('./') {
-                    sh """
-                    docker build . -t frontend 
-                    """
+                steps {
+                    sh 'npm install'
+                    sh 'npm run build'
                 }
             }
 
@@ -72,6 +75,16 @@ pipeline {
             }
         }
 
+        stage('Build Docker') {
+            agent any 
+
+            steps {
+                dir('./'){
+                    sh 'docker build . -t frontend'
+                }
+            }
+        }
+
         stage('Deploy Frontend'){
             agent any
 
@@ -79,6 +92,8 @@ pipeline {
                 echo 'Deploy Frontend'
 
                 dir ('./server') {
+                    sh 'docker ps -f name=raor_dev -q | xargs --no-run-if-empty docker conatiner stop'
+                    sh 'docker container ls -a -fname=raor_dev -q xargs -r docker container rm'
                     sh '''
                     docker run -p 80:80 -d frontend
                     '''
