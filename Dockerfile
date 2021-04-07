@@ -1,7 +1,7 @@
 # base image
 FROM nginx:latest
 
-VOLUME /raor_dev_volume
+VOLUME /frontend_volume
 
 RUN rm -rf /etc/nginx/conf.d/default.conf
 
