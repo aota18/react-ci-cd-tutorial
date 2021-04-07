@@ -90,13 +90,13 @@ pipeline {
             steps {
                 echo 'Deploy Frontend'
 
-                dir ('./server') {
-                    sh 'docker ps -f name=raor_dev -q | xargs --no-run-if-empty docker conatiner stop'
-                    sh 'docker container ls -a -fname=raor_dev -q | xargs -r docker container rm'
-                    sh '''
-                    docker run -p 80:80 -d frontend
-                    '''
-                }
+                sh 'docker ps -f name=raor_dev -q | xargs --no-run-if-empty docker conatiner stop'
+                sh 'docker container ls -a -fname=raor_dev -q | xargs -r docker container rm'
+                sh 'docker images --no-trunc --all --quiet --filter="dangling=true" | xargs --no-run-if-empty docker rmi'
+                sh '''
+                docker run -p 80:80 -d frontend
+                '''
+
             }
 
             post {
