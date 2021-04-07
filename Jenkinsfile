@@ -61,10 +61,9 @@ pipeline {
             steps {
                 echo 'Build Frontend'
 
-                steps {
-                    sh 'npm install'
-                    sh 'npm run build'
-                }
+                sh 'npm install'
+                sh 'npm run build'
+                
             }
 
             post {
