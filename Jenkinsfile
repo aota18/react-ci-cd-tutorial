@@ -94,7 +94,7 @@ pipeline {
                 sh 'docker container ls -a -fname=frontend -q | xargs -r docker container rm'
                 sh 'docker images --no-trunc --all --quiet --filter="dangling=true" | xargs --no-run-if-empty docker rmi'
                 sh '''
-                docker run -p 80:80 -d --name frontend frontend/react
+                docker run -p 80:80 -d --name frontend frontend-react
                 '''
 
             }
