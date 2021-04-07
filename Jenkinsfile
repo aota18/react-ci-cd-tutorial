@@ -92,7 +92,7 @@ pipeline {
 
                 dir ('./server') {
                     sh 'docker ps -f name=raor_dev -q | xargs --no-run-if-empty docker conatiner stop'
-                    sh 'docker container ls -a -fname=raor_dev -q xargs -r docker container rm'
+                    sh 'docker container ls -a -fname=raor_dev -q | xargs -r docker container rm'
                     sh '''
                     docker run -p 80:80 -d frontend
                     '''
